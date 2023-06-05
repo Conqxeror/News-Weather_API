@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="favicon" href="./right-arrow.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+        }
+        .box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .txt-b {
+            width: 100%;
+            border-radius: 4px;
+        }
+        .button {
+            border-radius: 5px;
+            margin-left: -19px;
+        }
+        #weatherDetails {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;">
+    <nav class="navbar fixed-top bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/" style="color: blue; display: flex; align-items: baseline; gap: 5px;"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
+            <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5z"/>
+          </svg> Go Back?</a>
+        </div>
+    </nav>
+    <div class="box">
+        <div class="container">
+            <div class="text-center">
+                <h3>Weather App</h3>
+            </div>
+            <div>
+                <form action="/weather" method="get" id="weatherForm" style="display: flex;
+                align-items: baseline;
+                gap: 10px;">
+                    <input type="text" id="cityInput" name="city" placeholder="Search City" class="form-control">
+                    <button type="submit" class="btn btn-primary mt-2">GO</button>
+                </form>
+            </div>
+            <div id="weatherDetails">
+                <div>
+                    <div style="margin: 30px 30px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
+                            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                          </svg>
+                    </div>
+                    <div>
+                        <h1 class="temp"><%= weatherData.temperature %>° C</h1> <!-- Display temperature -->
+                    </div>
+                    <div>
+                        <h5><%= weatherData.weatherDescription %></h5> <!-- Display weather description -->
+                    </div>
+                    <div>
+                        <h5><%= weatherData.location %></h5> <!-- Display location -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+       $(document).ready(function(){
+    $("#weatherForm").submit(function(e) {
+        e.preventDefault();
+        const API_KEY = "344cb3455ba1f4b98908ed7665d1494a";
+        const name = $("#cityInput").val();
+        $.get(`https://api.openweathermap.org/data/2.5/weather?q=${name}&units=metric&appid=${API_KEY}`, function (data) {
+            // Update the weather data on the page
+            $("#weatherDetails .temp").text(data.main.temp + "° C");  // Display temperature
+            $("#weatherDetails h5:nth-of-type(1)").text(data.weather[0].description);  // Display weather description
+            $("#weatherDetails h5:nth-of-type(2)").text(data.name);  // Display location
+        });
+    });
+});
+    </script>
+</body>
+</html>

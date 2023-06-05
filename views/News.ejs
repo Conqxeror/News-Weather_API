@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand">Breaking News</a>
+        <form class="d-flex" role="search" action="/weather" method="get">
+          <input
+            class="form-control me-2 city"
+            type="search"
+            placeholder="Search Weather"
+            aria-label="Search"
+            name="city"
+          />
+          <button class="btn btn-outline-success" type="submit">Go</button>
+        </form>
+        
+      </div>
+    </nav>
+
+    <div class="d-flex flex-column justify-content-center align-items-center container-fluid border border-primary content"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: "https://newsapi.org/v2/top-headlines?country=us&apiKey=API_KEY",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.info(result);
+            $(result.articles).each(function(index, article) {
+  var articleHtml = `
+    <div class="card" style="width: 90vw; margin-top: 10px">
+      <img src="${article.urlToImage}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">${article.title}</h5>
+        <p class="card-text">${article.description}</p>
+        <a href="${article.url}" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  `;
+  
+  $('.content').append(articleHtml);
+});
+
+            console.info(result);
+          },
+          error: function (error) {
+            console.info(error);
+          },
+        });
+        
+      });
+    </script>
+  </body>
+</html>
